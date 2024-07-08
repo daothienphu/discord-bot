@@ -21,15 +21,22 @@ class BonkCog(commands.Cog):
                 member = m
                 break
     
-        #imagePaths = ArtPathLoader.LoadArtByNamesInFolder("bonkCog", ["bonk1", "bonk2", "bonk3", "bonk4", "bonk5"])
-        #randomimage = imagePaths[random.randint(0, len(imagePaths) - 1)]        
-        #print(imagePaths)
-        #print(randomimage)
+        artPathLoader = ArtPathLoader()
+        imagePaths = artPathLoader.LoadArtByNamesInFolder("bonkCog", ["bonk1", "bonk2", "bonk3", "bonk4", "bonk5"])
+        randomImage = imagePaths[random.randint(0, len(imagePaths) - 1)]        
         
+        file = discord.File(randomImage)
         if member:
-            await ctx.send(f"{author.mention} bonked {member.mention}!")
+            if file: 
+                await ctx.send(f"{author.mention} bonked {member.mention}!", file=file)
+            else:
+                await ctx.send(f"{author.mention} bonked {member.mention}!")
         else:
-            await ctx.send(f"{author.mention} bonked {username}!")
+            if file:
+                await ctx.send(f"{author.mention} bonked {username}!", file=file)
+            else: 
+                await ctx.send(f"{author.mention} bonked {username}!")
+            
 
 async def setup(bot):
     await bot.add_cog(BonkCog(bot))
